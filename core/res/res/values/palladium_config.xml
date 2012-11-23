@@ -104,9 +104,14 @@
     <!-- Whether key handler sends intent when changing slider position -->
     <string name="config_alertSliderIntent"></string>
 
-	
+
      <!-- The list of vendor package signatures that should also be considered
           platform signatures, specifically for use on devices with a vendor partition. -->
      <string-array name="config_vendorPlatformSignatures">
      </string-array>
+
+    <!-- Button backlight -->
+    <dimen name="config_buttonBrightnessSettingDefaultFloat">1.0</dimen>
+    <bool name="config_deviceHasVariableButtonBrightness">false</bool>
+
 </resources>

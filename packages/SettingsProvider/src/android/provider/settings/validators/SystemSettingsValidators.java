@@ -247,5 +247,7 @@ public class SystemSettingsValidators {
                     }
                 });
         VALIDATORS.put(System.NAVIGATION_BAR_ARROW_KEYS, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.BUTTON_BRIGHTNESS, NON_NEGATIVE_INTEGER_VALIDATOR);
+        VALIDATORS.put(System.BUTTON_BACKLIGHT_TIMEOUT, NON_NEGATIVE_INTEGER_VALIDATOR);
     }
 }

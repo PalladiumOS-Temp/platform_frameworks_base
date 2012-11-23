@@ -93,5 +93,7 @@ public class SystemSettings {
         Settings.System.NAVIGATION_BAR_INVERSE,
         Settings.System.NAVBAR_LAYOUT_VIEWS,
         Settings.System.NAVIGATION_BAR_ARROW_KEYS,
+        Settings.System.BUTTON_BRIGHTNESS,
+        Settings.System.BUTTON_BACKLIGHT_TIMEOUT,
     };
 }
