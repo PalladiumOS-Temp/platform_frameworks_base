@@ -5688,6 +5688,30 @@ public final class Settings {
         * @hide
         */
         public static final String AMBIENT_ICONS_COLOR = "ambient_icons_color";
+        /**
+         * Whether the phone vibrates on call connect
+         * @hide
+         */
+        public static final String VIBRATE_ON_CONNECT = "vibrate_on_connect";
+
+        /**
+         * Whether the phone vibrates on call waiting
+         * @hide
+         */
+        public static final String VIBRATE_ON_CALLWAITING = "vibrate_on_callwaiting";
+
+        /**
+         * Whether the phone vibrates on disconnect
+         * @hide
+         */
+        public static final String VIBRATE_ON_DISCONNECT = "vibrate_on_disconnect";
+
+        /**
+         * IMPORTANT: If you add a new public settings you also have to add it to
+         * PUBLIC_SETTINGS below. If the new setting is hidden you have to add
+         * it to PRIVATE_SETTINGS below. Also add a validator that can validate
+         * the setting value. See an example above.
+         */
 
         /**
          * Keys we no longer back up under the current schema, but want to continue to
@@ -5848,6 +5872,9 @@ public final class Settings {
             PRIVATE_SETTINGS.add(STATUS_BAR_SHOW_TICKER);
             PRIVATE_SETTINGS.add(STATUS_BAR_TICKER_ANIMATION_MODE);
             PRIVATE_SETTINGS.add(STATUS_BAR_TICKER_TICK_DURATION);
+            PRIVATE_SETTINGS.add(VIBRATE_ON_CONNECT);
+            PRIVATE_SETTINGS.add(VIBRATE_ON_CALLWAITING);
+            PRIVATE_SETTINGS.add(VIBRATE_ON_DISCONNECT);
         }
 
         /**
