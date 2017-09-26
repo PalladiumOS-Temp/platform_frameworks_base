@@ -95,5 +95,6 @@ public class SystemSettings {
         Settings.System.NAVIGATION_BAR_ARROW_KEYS,
         Settings.System.BUTTON_BRIGHTNESS,
         Settings.System.BUTTON_BACKLIGHT_TIMEOUT,
+        Settings.System.ANBI_ENABLED_OPTION,
     };
 }
