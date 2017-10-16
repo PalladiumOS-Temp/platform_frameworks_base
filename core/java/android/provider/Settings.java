@@ -5261,7 +5261,14 @@ public final class Settings {
          * @hide
          */
         public static final String SWITCH_STYLE = "switch_style";
-        
+
+        /**
+         * Whether to control brightness from status bar
+         *
+         * @hide
+         */
+        public static final String STATUS_BAR_BRIGHTNESS_CONTROL = "status_bar_brightness_control";        
+
         /**
          * Keys we no longer back up under the current schema, but want to continue to
          * process when restoring historical backup datasets.
