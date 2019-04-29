@@ -699,4 +699,10 @@ interface IActivityManager {
      */
     boolean isSwipeToScreenshotGestureActive();
 
+
+    /**
+     *  Force full screen for devices with cutout
+     */
+    boolean shouldForceCutoutFullscreen(in String packageName);
+
 }
