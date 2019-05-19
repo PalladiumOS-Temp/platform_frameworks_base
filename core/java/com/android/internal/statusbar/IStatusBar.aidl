@@ -235,4 +235,6 @@ oneway interface IStatusBar
      * Palladium
      */
     void toggleCameraFlash();
+    void toggleCameraFlashState(boolean enable);
+
 }

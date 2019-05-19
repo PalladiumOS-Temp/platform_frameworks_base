@@ -155,4 +155,5 @@ interface IStatusBarService
      * Palladium
      */
     void toggleCameraFlash();
+    void toggleCameraFlashState(boolean enable);
 }
