@@ -552,6 +552,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     // Screenshot trigger states
     // Time to volume and power must be pressed within this interval of each other.
     private static final long SCREENSHOT_CHORD_DEBOUNCE_DELAY_MILLIS = 150;
+    // Time for volume and power to be pressed to take a screenshot
+    private static final long SCREENSHOT_CHORD_DELAY_TIMER = 0;
     // Increase the chord delay when taking a screenshot from the keyguard
     private static final float KEYGUARD_SCREENSHOT_CHORD_DELAY_MULTIPLIER = 2.5f;
     private boolean mScreenshotChordEnabled;
@@ -1388,7 +1390,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             // Double the time it takes to take a screenshot from the keyguard
             return (long) (KEYGUARD_SCREENSHOT_CHORD_DELAY_MULTIPLIER * delayMs);
         }
-        return delayMs;
+        return SCREENSHOT_CHORD_DELAY_TIMER;
     }
 
     private long getRingerToggleChordDelay() {
