@@ -151,4 +151,8 @@
          to enable/disable DC dimming. -->
     <string name="config_deviceDcDimmingSysfsNode"></string>
 
+    <!-- -1 means use same as config_screenBrightnessDoze -->
+    <integer name="config_screenBrightnessPulse">-1</integer>
+
+
 </resources>
