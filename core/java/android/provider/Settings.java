@@ -5059,6 +5059,11 @@ public final class Settings {
          */
         public static final String NAVIGATION_BAR_INVERSE = "navigation_bar_inverse";
 
+        /**
+         * Which navigation bar layout to use
+         * @hide
+         */
+        public static final String NAVBAR_LAYOUT_VIEWS = "navbar_layout_views";
 
         /**
          * Enable/Disable screenshot sound
