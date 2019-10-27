@@ -22,16 +22,19 @@ import static com.android.systemui.util.InjectionInflationController.VIEW_CONTEX
 import android.annotation.ColorInt;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.ContentObserver;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.UserHandle;
 import android.provider.AlarmClock;
 import android.provider.Settings;
 import android.service.notification.ZenModeConfig;
@@ -114,6 +117,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
     private static final int TOOLTIP_NOT_YET_SHOWN_COUNT = 0;
     public static final int MAX_TOOLTIP_SHOWN_COUNT = 2;
 
+    private final Handler mHandler = new Handler();
     private final NextAlarmController mAlarmController;
     private final ZenModeController mZenController;
     private final StatusBarIconController mStatusBarIconController;
@@ -164,6 +168,29 @@ public class QuickStatusBarHeader extends RelativeLayout implements
     private final UiEventLogger mUiEventLogger;
     // Used for RingerModeTracker
     private final LifecycleRegistry mLifecycle = new LifecycleRegistry(this);
+
+    private class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = getContext().getContentResolver();
+            resolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.QS_BATTERY_MODE), false,
+                    this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.STATUS_BAR_BATTERY_STYLE), false,
+                    this, UserHandle.USER_ALL);
+            }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            updateSettings();
+        }
+    }
+
+    private SettingsObserver mSettingsObserver = new SettingsObserver(mHandler);
 
     private boolean mHasTopCutout = false;
     private int mStatusBarPaddingTop = 0;
@@ -226,6 +253,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         mRingerModeTracker = ringerModeTracker;
         mUiEventLogger = uiEventLogger;
         mBlurUtils = new BlurUtils(mContext.getResources(), new DumpManager());
+        mSettingsObserver.observe();
     }
 
     @Override
@@ -283,14 +311,14 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         mBatteryRemainingIcon = findViewById(R.id.batteryRemainingIcon);
         // Don't need to worry about tuner settings for this icon
         mBatteryRemainingIcon.setIgnoreTunerUpdates(true);
-        // QS will always show the estimate, and BatteryMeterView handles the case where
-        // it's unavailable or charging
-        mBatteryRemainingIcon.setPercentShowMode(BatteryMeterView.MODE_ESTIMATE);
+        mBatteryRemainingIcon.setPercentShowMode(BatteryMeterView.MODE_ON);
+        mBatteryRemainingIcon.setOnClickListener(this);
         mRingerModeTextView.setSelected(true);
         mNextAlarmTextView.setSelected(true);
 
         mAllIndicatorsEnabled = mPrivacyItemController.getAllIndicatorsAvailable();
         mMicCameraIndicatorsEnabled = mPrivacyItemController.getMicCameraAvailable();
+        updateSettings();
     }
 
     public QuickQSPanel getHeaderQsPanel() {
@@ -446,6 +474,40 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         updateStatusIconAlphaAnimator();
         updateHeaderTextContainerAlphaAnimator();
         updatePrivacyChipAlphaAnimator();
+    }
+
+    private void updateSettings() {
+        updateQSBatteryMode();
+        updateSBBatteryStyle();
+        updateResources();
+    }
+
+    private void updateQSBatteryMode() {
+        int showEstimate = Settings.System.getInt(mContext.getContentResolver(),
+        Settings.System.QS_BATTERY_MODE, 0);
+        if (showEstimate == 0) {
+            mBatteryRemainingIcon.setShowPercent(0);
+            mBatteryRemainingIcon.setPercentShowMode(BatteryMeterView.MODE_OFF);
+        } else if (showEstimate == 1) {
+            mBatteryRemainingIcon.setShowPercent(0);
+            mBatteryRemainingIcon.setPercentShowMode(BatteryMeterView.MODE_ON);
+        } else if (showEstimate == 2) {
+            mBatteryRemainingIcon.setShowPercent(1);
+            mBatteryRemainingIcon.setPercentShowMode(BatteryMeterView.MODE_OFF);
+        } else if (showEstimate == 3) {
+            mBatteryRemainingIcon.setShowPercent(0);
+            mBatteryRemainingIcon.setPercentShowMode(BatteryMeterView.MODE_ESTIMATE);
+        }
+        mBatteryRemainingIcon.updatePercentView();
+        mBatteryRemainingIcon.updateVisibility();
+    }
+
+    private void updateSBBatteryStyle() {
+        mBatteryRemainingIcon.setBatteryStyle(Settings.System.getInt(mContext.getContentResolver(),
+        Settings.System.STATUS_BAR_BATTERY_STYLE, 0));
+        mBatteryRemainingIcon.updateBatteryStyle();
+        mBatteryRemainingIcon.updatePercentView();
+        mBatteryRemainingIcon.updateVisibility();
     }
 
     private void updateStatusIconAlphaAnimator() {
