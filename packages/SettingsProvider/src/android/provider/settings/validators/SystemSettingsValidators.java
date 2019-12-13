@@ -224,5 +224,6 @@ public class SystemSettingsValidators {
                         return true;
                     }
                 });
+        VALIDATORS.put(System.NAVIGATION_BAR_ARROW_KEYS, BOOLEAN_VALIDATOR);
     }
 }
