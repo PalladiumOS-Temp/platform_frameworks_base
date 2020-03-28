@@ -131,4 +131,7 @@
     <java-symbol type="integer" name="config_smartCutoffTemperature" />
     <java-symbol type="integer" name="config_smartCutoffResumeTemperature" />
 
+   <!-- Enable face auth only when swiping security view -->
+   <java-symbol type="bool" name="config_faceAuthOnlyOnSecurityView" />
+
 </resources>

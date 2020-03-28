@@ -137,4 +137,7 @@
     <integer name="config_smartCutoffTemperature">30</integer>
     <integer name="config_smartCutoffResumeTemperature">25</integer>
 
+    <!-- Enable face auth only when swiping security view -->
+    <bool name="config_faceAuthOnlyOnSecurityView">false</bool>
+
 </resources>
