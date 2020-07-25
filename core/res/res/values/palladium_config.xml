@@ -147,4 +147,8 @@
          or FOD Circle hiding after the screen is put to sleep -->
     <bool name="config_hideFodCircleGoingToSleep">false</bool>
 
+    <!-- Defines the sysfs attribute path used by the device
+         to enable/disable DC dimming. -->
+    <string name="config_deviceDcDimmingSysfsNode"></string>
+
 </resources>
