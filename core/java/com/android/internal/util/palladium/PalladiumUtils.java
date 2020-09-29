@@ -22,8 +22,10 @@ import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.hardware.fingerprint.FingerprintManager;
 import android.net.ConnectivityManager;
+import android.hardware.input.InputManager;
 import android.net.NetworkInfo;
 import android.os.BatteryManager;
 import android.os.SystemProperties;
@@ -35,6 +37,8 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemProperties;
 import android.os.SystemClock;
+import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.os.UserHandle;
 import android.view.IWindowManager;
 import android.view.WindowManagerGlobal;
@@ -44,8 +48,13 @@ import android.view.KeyEvent;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import com.android.internal.R;
 
 import com.android.internal.statusbar.IStatusBarService;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Some custom utilities
@@ -116,7 +125,23 @@ public class PalladiumUtils {
         float n = temp + 0.5f;
         // Use boolean to determine celsius or fahrenheit
         return String.valueOf((n - c) % 2 == 0 ? (int) temp :
-                ForC ? c * 9/5 + 32 + "°F" :c + "°C");
+                ForC ? c * 9/5 + 32:c);
+    }
+
+    // Method to detect countries that use Fahrenheit
+    public static boolean mccCheck(Context context) {
+        // MCC's belonging to countries that use Fahrenheit
+        String[] mcc = {"364", "552", "702", "346", "550", "376", "330",
+                "310", "311", "312", "551"};
+
+        TelephonyManager tel = (TelephonyManager) context.getSystemService(
+                Context.TELEPHONY_SERVICE);
+        String networkOperator = tel.getNetworkOperator();
+
+        // Check the array to determine celsius or fahrenheit.
+        // Default to celsius if can't access MCC
+        return !TextUtils.isEmpty(networkOperator) && Arrays.asList(mcc).contains(
+                networkOperator.substring(0, /*Filter only 3 digits*/ 3));
     }
 
     public static void switchScreenOff(Context ctx) {
