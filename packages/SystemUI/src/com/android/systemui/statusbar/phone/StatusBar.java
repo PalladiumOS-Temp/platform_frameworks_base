@@ -757,6 +757,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_PANEL_BG_USE_NEW_TINT),
                     false, this, UserHandle.USER_ALL);
+             mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LOCKSCREEN_MEDIA_BLUR),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -786,7 +789,10 @@ public class StatusBar extends SystemUI implements DemoMode,
                 updateSwitchStyle();
 	    } else if (uri.equals(Settings.System.getUriFor(Settings.System.QS_PANEL_BG_USE_NEW_TINT))) {
                 mQSPanel.getHost().reloadAllTiles();
-          }
+          } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.LOCKSCREEN_MEDIA_BLUR))) {
+                setLockScreenMediaBlurLevel();
+            }
         }
 
         public void update() {
@@ -797,8 +803,16 @@ public class StatusBar extends SystemUI implements DemoMode,
             setUseLessBoringHeadsUp();
             setHeadsUpStoplist();
             setHeadsUpBlacklist();
+            setLockScreenMediaBlurLevel();
         }
     }
+
+    private void setLockScreenMediaBlurLevel() {
+        if (mMediaManager != null) {
+            mMediaManager.setLockScreenMediaBlurLevel();
+        }
+    }
+
 
     /**
      * Public constructor for StatusBar.
