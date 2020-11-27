@@ -69,6 +69,7 @@ import com.android.internal.logging.UiEvent;
 import com.android.internal.logging.UiEventLogger;
 import com.android.internal.logging.UiEventLoggerImpl;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
+import com.android.internal.util.custom.FodUtils;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.keyguard.KeyguardSecurityModel.SecurityMode;
 import com.android.settingslib.utils.ThreadUtils;
@@ -125,6 +126,7 @@ public class KeyguardSecurityContainer extends FrameLayout implements KeyguardSe
     private InjectionInflationController mInjectionInflationController;
     private boolean mSwipeUpToRetry;
     private AdminSecondaryLockScreenController mSecondaryLockScreenController;
+    private boolean mHasFod;
 
     private final ViewConfiguration mViewConfiguration;
     private final SpringAnimation mSpringAnimation;
@@ -262,6 +264,10 @@ public class KeyguardSecurityContainer extends FrameLayout implements KeyguardSe
         mKeyguardStateController = Dependency.get(KeyguardStateController.class);
         mSecondaryLockScreenController = new AdminSecondaryLockScreenController(context, this,
                 mUpdateMonitor, mCallback, new Handler(Looper.myLooper()));
+
+        PackageManager packageManager = mContext.getPackageManager();
+        mHasFod = packageManager.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT) &&
+                FodUtils.hasFodSupport(mContext);
     }
 
     public void setSecurityCallback(SecurityCallback callback) {
@@ -520,7 +526,6 @@ public class KeyguardSecurityContainer extends FrameLayout implements KeyguardSe
         int inset;
         int minBottomMargin = mUpdateMonitor.isFingerprintDetectionRunning() && fodEquipped ? getResources().getDimensionPixelSize(
                 R.dimen.kg_security_container_min_bottom_margin) : 0;
-
         if (sNewInsetsMode == NEW_INSETS_MODE_FULL) {
             int bottomInset = insets.getInsetsIgnoringVisibility(systemBars()).bottom;
             int imeInset = insets.getInsets(ime()).bottom;
