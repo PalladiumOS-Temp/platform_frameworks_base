@@ -107,6 +107,7 @@ public class KeyguardStatusView extends GridLayout implements
                 refreshTime();
                 updateOwnerInfo();
                 updateLogoutView();
+                UpdateFPIcon();
             }
         }
 
@@ -125,6 +126,7 @@ public class KeyguardStatusView extends GridLayout implements
             refreshFormat();
             updateOwnerInfo();
             updateLogoutView();
+            UpdateFPIcon();
         }
 
         @Override
@@ -191,7 +193,7 @@ public class KeyguardStatusView extends GridLayout implements
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-	    fpIcon = findViewById(R.id.fingerprint_view_icon);
+        fpIcon = findViewById(R.id.fingerprint_view_icon);
         mStatusViewContainer = findViewById(R.id.status_view_container);
         mLogoutView = findViewById(R.id.logout);
         mNotificationIcons = findViewById(R.id.clock_notification_icon_container);
@@ -212,7 +214,7 @@ public class KeyguardStatusView extends GridLayout implements
         setEnableMarquee(shouldMarquee);
         refreshFormat();
         updateOwnerInfo();
-	    UpdateFPIcon();
+        UpdateFPIcon();
         updateLogoutView();
         updateDark();
 
@@ -482,23 +484,14 @@ public class KeyguardStatusView extends GridLayout implements
         mHasFod = FodUtils.hasFodSupport(mContext);
 
 		FingerprintManager fingerprintManager = (FingerprintManager) mContext.getSystemService(Context.FINGERPRINT_SERVICE);
-	        if (fingerprintManager == null) {
+	        if (fingerprintManager == null || !fingerprintManager.isHardwareDetected() || !fingerprintManager.hasEnrolledFingerprints() || mHasFod) {
                         fpIcon.setVisibility(View.GONE);
-			Log.w ("PalladiumLSManager", "FP icon: FingerprintManager is null, falling back to Dont show icon");
-		} else if (!fingerprintManager.isHardwareDetected()) { 
-			fpIcon.setVisibility(View.GONE);
-			Log.w ("PalladiumLSManager", "FP icon: Fingerprint not detected, falling back to Dont show icon");
-		} else if (!fingerprintManager.hasEnrolledFingerprints()) { 
-			fpIcon.setVisibility(View.GONE);
-			Log.i ("PalladiumLSManager", "FP icon: fpcounter=0, Dont show icon");
-		} else if (mHasFod) { 
-			fpIcon.setVisibility(View.GONE);
-			Log.i ("PalladiumLSManager", "FP icon: Device uses FOD, don't show icon");
+			Log.d("PalladiumLSManager", "FP icon: Fingerprint icon not showing");
 		} else if (fingerprintManager.hasEnrolledFingerprints()) { 
 			fpIcon.setVisibility(View.VISIBLE);
-			Log.i ("PalladiumLSManager", "FP icon: fpcounter=1, Show icon");
+			Log.d("PalladiumLSManager", "FP icon: fingerprint icon showing");
 		} else {
-			Log.w ("PalladiumLSManager", "FP icon: fpcounter out of range or could not be read! Falling back to Dont show icon");
+			Log.d("PalladiumLSManager", "FP icon: No fingerprint state matching! No changes will be done.");
 		}
     }
 }
