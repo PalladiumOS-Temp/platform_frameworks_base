@@ -45,6 +45,7 @@ import com.android.systemui.qs.tiles.HotspotTile;
 import com.android.systemui.qs.tiles.LocationTile;
 import com.android.systemui.qs.tiles.NfcTile;
 import com.android.systemui.qs.tiles.NightDisplayTile;
+import com.android.systemui.qs.tiles.PowerMenuTile;
 import com.android.systemui.qs.tiles.RotationLockTile;
 import com.android.systemui.qs.tiles.ScreenRecordTile;
 import com.android.systemui.qs.tiles.SoundTile;
@@ -90,6 +91,7 @@ public class QSFactoryImpl implements QSFactory {
     private final Provider<HeadsUpTile> mHeadsUpTileProvider;
     private final Provider<DataSwitchTile> mDataSwitchTileProvider;
     private final Provider<CaffeineTile> mCaffeineTileProvider;
+    private final Provider<PowerMenuTile> mPowerMenuTileProvider;
     private final Provider<SoundTile> mSoundTileProvider;
     private final Provider<AODTile> mAODTileProvider;
     private final Provider<SyncTile> mSyncTileProvider;
@@ -123,6 +125,7 @@ public class QSFactoryImpl implements QSFactory {
             Provider<HeadsUpTile> headsUpTileProvider,
             Provider<DataSwitchTile> dataSwitchTileProvider,
             Provider<CaffeineTile> caffeineTileProvider,
+            Provider<PowerMenuTile> powerMenuTileProvider,
             Provider<SoundTile> soundTileProvider,
             Provider<AODTile> aodTileProvider,
             Provider<SyncTile> syncTileProvider,
@@ -152,6 +155,7 @@ public class QSFactoryImpl implements QSFactory {
         mHeadsUpTileProvider = headsUpTileProvider;
         mDataSwitchTileProvider = dataSwitchTileProvider;
         mCaffeineTileProvider = caffeineTileProvider;
+        mPowerMenuTileProvider = powerMenuTileProvider;
         mSoundTileProvider = soundTileProvider;
         mAODTileProvider = aodTileProvider;
         mSyncTileProvider = syncTileProvider;
@@ -216,6 +220,8 @@ public class QSFactoryImpl implements QSFactory {
                 return mDataSwitchTileProvider.get();
             case "caffeine":
                 return mCaffeineTileProvider.get();
+            case "powermenu":
+                return mPowerMenuTileProvider.get();
             case "sound":
                 return mSoundTileProvider.get();
             case "aod":
