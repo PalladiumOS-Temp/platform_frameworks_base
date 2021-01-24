@@ -27,10 +27,7 @@ import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 
-import com.android.keyguard.KeyguardUpdateMonitor;
-import com.android.keyguard.KeyguardUpdateMonitorCallback;
 import com.android.settingslib.Utils;
-import com.android.systemui.Dependency;
 import com.android.systemui.R;
 
 public class NavigationHandle extends View implements ButtonInterface {
@@ -38,37 +35,9 @@ public class NavigationHandle extends View implements ButtonInterface {
     private final Paint mPaint = new Paint();
     private @ColorInt final int mLightColor;
     private @ColorInt final int mDarkColor;
-    private boolean mIsDreaming = false;
-    private boolean mIsKeyguard = false;
     private final int mRadius;
     private final int mBottom;
     private boolean mRequiresInvalidate;
-
-    private KeyguardUpdateMonitor mUpdateMonitor;
-
-    private KeyguardUpdateMonitorCallback mMonitorCallback = new KeyguardUpdateMonitorCallback() {
-        @Override
-        public void onDreamingStateChanged(boolean dreaming) {
-            mIsDreaming = dreaming;
-            if (dreaming) {
-                setVisibility(View.GONE);
-            } else if (!mIsKeyguard) {
-                setVisibility(View.VISIBLE);
-                if (mRequiresInvalidate) invalidate();
-            }
-        }
-
-        @Override
-        public void onKeyguardVisibilityChanged(boolean showing) {
-            mIsKeyguard = showing;
-            if (showing) {
-                setVisibility(View.GONE);
-            } else if (!mIsDreaming) {
-                setVisibility(View.VISIBLE);
-                if (mRequiresInvalidate) invalidate();
-            }
-        }
-    };
 
     public NavigationHandle(Context context) {
         this(context, null);
@@ -88,9 +57,6 @@ public class NavigationHandle extends View implements ButtonInterface {
         mDarkColor = Utils.getColorAttrDefaultColor(darkContext, R.attr.homeHandleColor);
         mPaint.setAntiAlias(true);
         setFocusable(false);
-
-        mUpdateMonitor = Dependency.get(KeyguardUpdateMonitor.class);
-        mUpdateMonitor.registerCallback(mMonitorCallback);
     }
 
     @Override
