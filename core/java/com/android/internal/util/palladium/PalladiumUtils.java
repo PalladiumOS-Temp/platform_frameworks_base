@@ -17,6 +17,7 @@
 package com.android.internal.util.palladium;
 
 import android.content.Context;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.input.InputManager;
@@ -25,6 +26,7 @@ import android.os.Looper;
 import android.os.PowerManager;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+import android.os.SystemProperties;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.view.IWindowManager;
@@ -45,6 +47,11 @@ public class PalladiumUtils {
 
     public static final String INTENT_SCREENSHOT = "action_handler_screenshot";
     public static final String INTENT_REGION_SCREENSHOT = "action_handler_region_screenshot";
+
+    private static boolean mBlurSupportedSysProp = SystemProperties
+            .getBoolean("ro.surface_flinger.supports_background_blur", false);
+    private static boolean mBlurDisabledSysProp = SystemProperties
+            .getBoolean("persist.sys.sf.disable_blurs", false);
 
     public static void switchScreenOff(Context ctx) {
         PowerManager pm = (PowerManager) ctx.getSystemService(Context.POWER_SERVICE);
@@ -72,6 +79,15 @@ public class PalladiumUtils {
         return isPackageInstalled(context, pkg, true);
     }
 
+    /**
+     * If this device can render blurs.
+     *
+     * @return {@code true} when supported.
+     */
+    public static boolean supportsBlur() {
+        return mBlurSupportedSysProp && !mBlurDisabledSysProp && ActivityManager.isHighEndGfx();
+    }
+    
     public static boolean deviceHasFlashlight(Context ctx) {
         return ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }
