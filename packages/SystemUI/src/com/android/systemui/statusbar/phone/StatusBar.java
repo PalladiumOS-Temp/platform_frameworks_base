@@ -66,7 +66,6 @@ import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentCallbacks2;
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -228,7 +227,6 @@ import com.android.systemui.statusbar.policy.KeyguardUserSwitcher;
 import com.android.systemui.statusbar.policy.NetworkController;
 import com.android.systemui.statusbar.policy.OnHeadsUpChangedListener;
 import com.android.systemui.statusbar.policy.RemoteInputQuickSettingsDisabler;
-import com.android.systemui.statusbar.policy.TelephonyIcons;
 import com.android.systemui.statusbar.policy.UserInfoControllerImpl;
 import com.android.systemui.statusbar.policy.UserSwitcherController;
 import com.android.systemui.volume.VolumeComponent;
@@ -318,7 +316,6 @@ public class StatusBar extends SystemUI implements DemoMode,
     public static final boolean ENABLE_LOCKSCREEN_WALLPAPER = true;
 
     private static final UiEventLogger sUiEventLogger = new UiEventLoggerImpl();
-    public static boolean USE_OLD_MOBILETYPE = false;
 
     static {
         boolean onlyCoreApps;
@@ -907,9 +904,6 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
 
         createAndAddWindows(result);
-
-        mPalladiumSettingsObserver.observe();
-        mPalladiumSettingsObserver.update();
 
         mStatusBarSettingsObserver.observe();
         mStatusBarSettingsObserver.update();
@@ -3937,40 +3931,6 @@ public class StatusBar extends SystemUI implements DemoMode,
             updateIsKeyguard();
         }
     };
-
-    private PalladiumSettingsObserver mPalladiumSettingsObserver = new PalladiumSettingsObserver(mHandler);
-    private class PalladiumSettingsObserver extends ContentObserver {
-        PalladiumSettingsObserver(Handler handler) {
-            super(handler);
-        }
-
-        void observe() {
-            ContentResolver resolver = mContext.getContentResolver();
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.USE_OLD_MOBILETYPE),
-                    false, this, UserHandle.USER_ALL);
-        }
-
-        @Override
-        public void onChange(boolean selfChange, Uri uri) {
-            if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.USE_OLD_MOBILETYPE))) {
-                setOldMobileType();
-          }
-       update();
-        }
-
-        public void update() {
-            setOldMobileType();
-        }
-    }
-
-    private void setOldMobileType() {
-        USE_OLD_MOBILETYPE = Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.USE_OLD_MOBILETYPE, 0,
-                UserHandle.USER_CURRENT) != 0;
-        TelephonyIcons.updateIcons(USE_OLD_MOBILETYPE);
-    }
 
     public int getWakefulnessState() {
         return mWakefulnessLifecycle.getWakefulness();
