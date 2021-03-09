@@ -186,7 +186,13 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
         addViewsAboveTiles();
         mMovableContentStartIndex = getChildCount();
         mRegularTileLayout = createRegularTileLayout();
-
+        addSecurityFooter();
+        addViewsBelowTiles();
+        if (mRegularTileLayout instanceof PagedTileLayout) {
+            mQsTileRevealController = new QSTileRevealController(mContext, this,
+                    (PagedTileLayout) mRegularTileLayout);
+            updateSettings();
+        }
         if (mUsingMediaPlayer) {
             mHorizontalLinearLayout = new RemeasuringLinearLayout(mContext);
             mHorizontalLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -210,13 +216,6 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
             addView(mHorizontalLinearLayout, lp);
 
             initMediaHostState();
-        }
-        addSecurityFooter();
-        addViewsBelowTiles();
-        if (mRegularTileLayout instanceof PagedTileLayout) {
-            mQsTileRevealController = new QSTileRevealController(mContext, this,
-                    (PagedTileLayout) mRegularTileLayout);
-            updateSettings();
         }
         mQSLogger.logAllTilesChangeListening(mListening, getDumpableTag(), mCachedSpecs);
         updateResources();
