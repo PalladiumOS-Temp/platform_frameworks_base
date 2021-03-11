@@ -16,7 +16,6 @@
 
 package android.provider.settings.validators;
 
-import static android.provider.settings.validators.SettingsValidators.ANY_INTEGER_VALIDATOR;
 import static android.provider.settings.validators.SettingsValidators.BOOLEAN_VALIDATOR;
 import static android.provider.settings.validators.SettingsValidators.COMPONENT_NAME_VALIDATOR;
 import static android.provider.settings.validators.SettingsValidators.DATE_FORMAT_VALIDATOR;
@@ -251,7 +250,6 @@ public class SystemSettingsValidators {
         VALIDATORS.put(System.BUTTON_BRIGHTNESS, NON_NEGATIVE_INTEGER_VALIDATOR);
         VALIDATORS.put(System.BUTTON_BACKLIGHT_TIMEOUT, NON_NEGATIVE_INTEGER_VALIDATOR);
         VALIDATORS.put(System.ANBI_ENABLED_OPTION, BOOLEAN_VALIDATOR);
-        VALIDATORS.put(System.FORCE_SHOW_NAVBAR, ANY_INTEGER_VALIDATOR);
         VALIDATORS.put(System.QS_PANEL_BG_USE_NEW_TINT, BOOLEAN_VALIDATOR);
     }
 }
