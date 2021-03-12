@@ -105,8 +105,8 @@ public class NetworkTraffic extends TextView {
 
     private ConnectivityManager mConnectivityManager;
 
-    private RelativeSizeSpan mSpeedRelativeSizeSpan = new RelativeSizeSpan(0.64f);
-    private RelativeSizeSpan mUnitRelativeSizeSpan = new RelativeSizeSpan(0.67f);
+    private RelativeSizeSpan mSpeedRelativeSizeSpan = new RelativeSizeSpan(0.70f);
+    private RelativeSizeSpan mUnitRelativeSizeSpan = new RelativeSizeSpan(0.65f);
 
     public NetworkTraffic(Context context) {
         this(context, null);
