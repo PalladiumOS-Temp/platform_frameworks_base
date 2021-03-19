@@ -18,9 +18,6 @@
     <!-- Whether to show a custom view for FOD -->
     <bool name="config_needCustomFODView">false</bool>
 
-    <!-- FOD icon dim-->
-    <bool name="config_targetUsesInKernelDimming">false</bool>
-
     <!-- Whether or not we should show vendor mismatch message -->
     <bool name="config_show_vendor_mismatch_message">false</bool>
 
