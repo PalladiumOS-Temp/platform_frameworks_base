@@ -2223,6 +2223,11 @@ public final class PowerManagerService extends SystemService
     }
 
     private void updateSmartChargingStatus() {
+
+        if(!mSmartCutoffEnabled){
+            mSmartCutofflock=false;
+        }
+
         if(!mSmartCutofflock){
             if (mPowerInputSuspended && (mBatteryLevel <= mSmartChargingResumeLevel) ||
                 (mPowerInputSuspended && !mSmartChargingEnabled)) {
@@ -2259,6 +2264,11 @@ public final class PowerManagerService extends SystemService
     }
 
     private void updateSmartCutoffStatus() {
+
+        if(!mSmartChargingEnabled){
+            mSmartCharginglock=false;
+        }
+
         if(!mSmartCharginglock){
             if (mPowerInputSuspended && (mBatteryTemperature <= mSmartCutoffResumeTemperature) ||
                 (mPowerInputSuspended && !mSmartCutoffEnabled)) {
