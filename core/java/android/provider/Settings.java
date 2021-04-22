@@ -4913,18 +4913,6 @@ public final class Settings {
         public static final String QS_PANEL_BG_USE_NEW_TINT = "qs_panel_bg_use_new_tint";
 
         /**
-         * Whether to enable DOZE only when charging
-         * @hide
-         */
-        public static final String DOZE_ON_CHARGE = "doze_on_charge";
-
-        /**
-         * hidden stting of the current atate of DOZE only when charging
-         * @hide
-         */
-        public static final String DOZE_ON_CHARGE_NOW = "doze_on_charge_now";
-
-        /**
          *  Enable statusbar double tap gesture on to put device to sleep
          * @hide
          */
