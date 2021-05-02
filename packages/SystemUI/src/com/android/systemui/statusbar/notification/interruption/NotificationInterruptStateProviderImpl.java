@@ -120,9 +120,7 @@ public class NotificationInterruptStateProviderImpl implements NotificationInter
                         && Settings.Global.HEADS_UP_OFF != Settings.Global.getInt(
                         mContentResolver,
                         Settings.Global.HEADS_UP_NOTIFICATIONS_ENABLED,
-                        Settings.Global.HEADS_UP_OFF)
-                        && Settings.System.getInt(mContentResolver,
-                        Settings.System.STATUS_BAR_SHOW_TICKER, 0) != 1;
+                        Settings.Global.HEADS_UP_OFF);
                 Log.d(TAG, "heads up is " + (mUseHeadsUp ? "enabled" : "disabled"));
                 if (wasUsing != mUseHeadsUp) {
                     if (!mUseHeadsUp) {
@@ -143,7 +141,7 @@ public class NotificationInterruptStateProviderImpl implements NotificationInter
                     Settings.Global.getUriFor(SETTING_HEADS_UP_TICKER), true,
                     mHeadsUpObserver);
             mContentResolver.registerContentObserver(
-                    Settings.System.getUriFor(Settings.System.STATUS_BAR_SHOW_TICKER),
+                    Settings.System.getUriFor(Settings.System.LESS_BORING_HEADS_UP),
                     true,
                     mHeadsUpObserver);
         }
@@ -279,12 +277,12 @@ public class NotificationInterruptStateProviderImpl implements NotificationInter
             return false;
         }
 
-/*        if (entry.getImportance() < NotificationManager.IMPORTANCE_HIGH) {
+        if (entry.getImportance() < NotificationManager.IMPORTANCE_HIGH) {
             if (DEBUG_HEADS_UP) {
                 Log.d(TAG, "No heads up: unimportant notification: " + sbn.getKey());
             }
             return false;
-        }*/
+        }
 
         boolean isDreaming = false;
         try {
